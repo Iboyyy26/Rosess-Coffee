@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rosess Coffee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0E0C0A;
+    --gold:#C9A84C;
+    --gold-dim:#8f7936;
+    --cream:#F3EDE1;
+    --cream-dim:#c9c0ab;
+    --line: rgba(201,168,76,0.28);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    background:var(--black);
+    color:var(--cream);
+    font-family:'Montserrat', sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* Signature element: topographic contour lines evoking 1,600 masl elevation */
+  .contours{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    opacity:0.5;
+    pointer-events:none;
+  }
+  .contours svg{ width:100%; height:100%; }
+  .contours path{
+    fill:none;
+    stroke:var(--gold);
+    stroke-width:0.6;
+    opacity:0.16;
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:460px;
+    padding:64px 28px 48px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    animation:rise 0.9s ease both;
+  }
+
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(14px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .eyebrow{
+    font-family:'Montserrat', sans-serif;
+    font-size:11px;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:22px;
+  }
+
+  .mark{
+    width:52px; height:52px;
+    margin-bottom:22px;
+  }
+
+  h1{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:500;
+    font-size:44px;
+    letter-spacing:0.04em;
+    line-height:1.05;
+    color:var(--cream);
+  }
+
+  .tagline{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:17px;
+    color:var(--cream-dim);
+    margin-top:10px;
+    letter-spacing:0.01em;
+  }
+
+  .origin{
+    margin-top:20px;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold-dim);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .origin::before, .origin::after{
+    content:"";
+    height:1px; width:26px;
+    background:var(--line);
+  }
+
+  .links{
+    width:100%;
+    margin-top:46px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .link-card{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    width:100%;
+    padding:18px 20px;
+    background:rgba(243,237,225,0.03);
+    border:1px solid var(--line);
+    border-radius:2px;
+    text-decoration:none;
+    color:var(--cream);
+    text-align:left;
+    transition:border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+  }
+  .link-card:hover, .link-card:focus-visible{
+    border-color:var(--gold);
+    background:rgba(201,168,76,0.06);
+    transform:translateY(-2px);
+  }
+  .link-card:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+  }
+
+  .icon{
+    flex:0 0 auto;
+    width:38px; height:38px;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--line);
+    border-radius:50%;
+    color:var(--gold);
+  }
+  .icon svg{ width:18px; height:18px; }
+
+  .link-text{ flex:1; }
+  .link-title{
+    font-family:'Montserrat', sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    letter-spacing:0.02em;
+    color:var(--cream);
+  }
+  .link-sub{
+    font-family:'Montserrat', sans-serif;
+    font-weight:400;
+    font-size:12px;
+    color:var(--cream-dim);
+    margin-top:2px;
+  }
+
+  .arrow{
+    flex:0 0 auto;
+    color:var(--gold-dim);
+    font-size:16px;
+    transition:transform 0.25s ease;
+  }
+  .link-card:hover .arrow{ transform:translateX(3px); color:var(--gold); }
+
+  footer{
+    margin-top:56px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+  }
+  .footer-line{
+    height:1px; width:40px;
+    background:var(--line);
+  }
+  .footer-text{
+    font-size:10.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold-dim);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .wrap{ animation:none; }
+    .link-card{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="contours" aria-hidden="true">
+  <svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice">
+    <path d="M -20 120 Q 100 80 200 130 T 420 110"/>
+    <path d="M -20 180 Q 90 150 200 190 T 420 175"/>
+    <path d="M -20 240 Q 110 210 200 250 T 420 235"/>
+    <path d="M -20 600 Q 100 560 200 610 T 420 590"/>
+    <path d="M -20 660 Q 90 630 200 670 T 420 655"/>
+    <path d="M -20 720 Q 110 690 200 730 T 420 715"/>
+  </svg>
+</div>
+
+<div class="wrap">
+  <div class="eyebrow">Talaga Bodas &middot; Garut</div>
+
+  <svg class="mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="50" cy="50" r="48" stroke="#C9A84C" stroke-width="1"/>
+    <path d="M35 42 C35 34 41 30 50 30 C59 30 65 34 65 42 C65 52 58 58 50 58 C42 58 35 52 35 42 Z" stroke="#C9A84C" stroke-width="1.4"/>
+    <path d="M50 30 L50 58" stroke="#C9A84C" stroke-width="1.4"/>
+    <path d="M40 62 Q50 70 60 62" stroke="#C9A84C" stroke-width="1" opacity="0.6"/>
+  </svg>
+
+  <h1>Rosess Coffee</h1>
+  <p class="tagline">Single-Origin Arabica &middot; Natural Process</p>
+  <div class="origin">1.600 MDPL</div>
+
+  <div class="links">
+    <a class="link-card" href="https://id.shp.ee/cAU1Ww5c" target="_blank" rel="noopener">
+      <span class="icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4h10l1 3h2a1 1 0 011 1v12a2 2 0 01-2 2H5a2 2 0 01-2-2V8a1 1 0 011-1h2l1-3zm2 0l-1 3h8l-1-3H9zm-3 6v9h12v-9H6zm4 2a2 2 0 104 0h2a4 4 0 01-8 0h2z"/></svg>
+      </span>
+      <span class="link-text">
+        <div class="link-title">Belanja di Shopee</div>
+        <div class="link-sub">Kopi dan bundling &middot; pengiriman nasional</div>
+      </span>
+      <span class="arrow">&#8594;</span>
+    </a>
+
+    <a class="link-card" href="https://www.tiktok.com/@rosesscoffe26?_r=1&_t=ZS-97gj9KqyG4z" target="_blank" rel="noopener">
+      <span class="icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.4 2.2 1.9 3.7 4 3.9V9.9c-1.4 0-2.7-.4-3.8-1.2v6.6c0 3.3-2.7 5.7-5.8 5.7A5.8 5.8 0 015 15.2a5.8 5.8 0 016.9-5.7v3.1a2.7 2.7 0 00-1-.2 2.7 2.7 0 100 5.4c1.5 0 2.7-1.2 2.7-2.7V3h2.9z"/></svg>
+      </span>
+      <span class="link-text">
+        <div class="link-title">TikTok Shop</div>
+        <div class="link-sub">Live, video, dan checkout langsung</div>
+      </span>
+      <span class="arrow">&#8594;</span>
+    </a>
+
+    <a class="link-card" href="https://www.instagram.com/rosesscoffee?igsh=M28xdzB1dmVhb2Zq" target="_blank" rel="noopener">
+      <span class="icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c2.7 0 3 0 4.1.06 1.1.05 1.8.22 2.3.42.6.24 1 .53 1.5 1s.76.9 1 1.5c.2.5.37 1.2.42 2.3.06 1.1.06 1.4.06 4.1s0 3-.06 4.1c-.05 1.1-.22 1.8-.42 2.3-.24.6-.53 1-1 1.5s-.9.76-1.5 1c-.5.2-1.2.37-2.3.42-1.1.06-1.4.06-4.1.06s-3 0-4.1-.06c-1.1-.05-1.8-.22-2.3-.42-.6-.24-1-.53-1.5-1s-.76-.9-1-1.5c-.2-.5-.37-1.2-.42-2.3C2.2 15 2.2 14.7 2.2 12s0-3 .06-4.1c.05-1.1.22-1.8.42-2.3.24-.6.53-1 1-1.5s.9-.76 1.5-1c.5-.2 1.2-.37 2.3-.42C8.8 2.2 9.1 2.2 12 2.2zm0 1.8c-2.65 0-2.96 0-4.02.06-.9.04-1.4.18-1.7.3-.44.17-.75.37-1.08.7-.33.33-.53.64-.7 1.08-.12.3-.26.8-.3 1.7C4.15 9.02 4.15 9.33 4.15 12s0 2.98.06 4.04c.04.9.18 1.4.3 1.7.17.44.37.75.7 1.08.33.33.64.53 1.08.7.3.12.8.26 1.7.3 1.06.06 1.37.06 4.02.06s2.96 0 4.02-.06c.9-.04 1.4-.18 1.7-.3.44-.17.75-.37 1.08-.7.33-.33.53-.64.7-1.08.12-.3.26-.8.3-1.7.06-1.06.06-1.37.06-4.04s0-2.98-.06-4.04c-.04-.9-.18-1.4-.3-1.7a2.9 2.9 0 00-.7-1.08 2.9 2.9 0 00-1.08-.7c-.3-.12-.8-.26-1.7-.3C14.96 4 14.65 4 12 4zm0 3.4a4.6 4.6 0 110 9.2 4.6 4.6 0 010-9.2zm0 1.8a2.8 2.8 0 100 5.6 2.8 2.8 0 000-5.6zm4.8-2a1.08 1.08 0 110 2.16 1.08 1.08 0 010-2.16z"/></svg>
+      </span>
+      <span class="link-text">
+        <div class="link-title">Instagram</div>
+        <div class="link-sub">Cerita origin, brewing, dan behind the scenes</div>
+      </span>
+      <span class="arrow">&#8594;</span>
+    </a>
+  </div>
+
+  <footer>
+    <div class="footer-line"></div>
+    <div class="footer-text">Rosess Coffee &middot; Garut, Indonesia</div>
+  </footer>
+</div>
+
+</body>
+</html>
