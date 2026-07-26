@@ -1,275 +1,407 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rosess Coffee</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Rosess Coffee — Buku Kas</title>
+<meta name="theme-color" content="#1A1A1A" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icon-192.png" />
+<link rel="apple-touch-icon" href="icon-192.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --black:#0E0C0A;
-    --gold:#C9A84C;
-    --gold-dim:#8f7936;
-    --cream:#F3EDE1;
-    --cream-dim:#c9c0ab;
-    --line: rgba(201,168,76,0.28);
+    --ink:#1A1A1A; --gold:#C9A84C; --cream:#F5F0E8; --cream-deep:#EAE1CE;
+    --olive:#6E7A4F; --brick:#A8532B; --paper:#FFFEFB;
   }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html,body{height:100%;}
-  body{
-    background:var(--black);
-    color:var(--cream);
-    font-family:'Montserrat', sans-serif;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    overflow-x:hidden;
-    position:relative;
-  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--cream);font-family:'Montserrat',sans-serif;color:var(--ink);}
+  .display{font-family:'Cormorant Garamond',serif;}
+  .app{max-width:420px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--cream);}
+  header{padding:22px 20px 14px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--cream-deep);}
+  .logo{width:40px;height:40px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .logo svg{width:18px;height:18px;}
+  header .brand{font-size:24px;font-weight:600;line-height:1.1;}
+  header .sub{font-size:11px;opacity:.55;letter-spacing:.03em;}
+  nav{display:flex;gap:4px;padding:8px 10px;border-bottom:1px solid var(--cream-deep);overflow-x:auto;}
+  nav button{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:8px;border:none;background:transparent;font-family:inherit;font-size:11px;color:#8a8578;cursor:pointer;}
+  nav button.active{background:var(--cream-deep);color:var(--ink);font-weight:600;}
+  main{flex:1;padding:18px 16px;}
+  footer{padding:12px 20px;text-align:center;font-size:10px;letter-spacing:.03em;opacity:.4;}
 
-  /* Signature element: topographic contour lines evoking 1,600 masl elevation */
-  .contours{
-    position:fixed;
-    inset:0;
-    z-index:0;
-    opacity:0.5;
-    pointer-events:none;
-  }
-  .contours svg{ width:100%; height:100%; }
-  .contours path{
-    fill:none;
-    stroke:var(--gold);
-    stroke-width:0.6;
-    opacity:0.16;
-  }
+  .card{background:var(--paper);border:1px solid var(--cream-deep);border-radius:12px;padding:16px;margin-bottom:16px;}
+  .label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;opacity:.55;margin-bottom:6px;}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+  .stat-value{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;}
+  .up{color:var(--olive);} .down{color:var(--brick);}
 
-  .wrap{
-    position:relative;
-    z-index:1;
-    width:100%;
-    max-width:460px;
-    padding:64px 28px 48px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-    animation:rise 0.9s ease both;
-  }
+  .seal{width:176px;height:176px;border-radius:50%;border:2px solid var(--gold);
+    box-shadow: inset 0 0 0 6px var(--cream), inset 0 0 0 8px rgba(201,168,76,.33);
+    background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 24px;text-align:center;}
+  .seal .lbl{font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:4px;}
+  .seal .amt{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:24px;padding:0 10px;font-variant-numeric:tabular-nums;}
+  .seal .name{font-size:10px;opacity:.55;margin-top:4px;}
 
-  @keyframes rise{
-    from{ opacity:0; transform:translateY(14px); }
-    to{ opacity:1; transform:translateY(0); }
-  }
+  .btn-primary{width:100%;padding:11px;border-radius:8px;border:none;background:var(--ink);color:var(--gold);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .btn-toggle{flex:1;padding:9px;border-radius:8px;border:none;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;background:var(--cream-deep);color:var(--ink);}
+  .btn-toggle.on-in{background:var(--olive);color:var(--paper);}
+  .btn-toggle.on-out{background:var(--brick);color:var(--paper);}
+  .row-flex{display:flex;gap:8px;}
+  .field{display:flex;flex-direction:column;gap:4px;font-size:13px;margin-bottom:12px;}
+  .field span{font-size:10px;text-transform:uppercase;letter-spacing:.04em;opacity:.6;}
+  input,select{border:1px solid var(--cream-deep);background:var(--paper);border-radius:8px;padding:9px 10px;font-family:inherit;font-size:14px;color:var(--ink);outline:none;width:100%;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
 
-  .eyebrow{
-    font-family:'Montserrat', sans-serif;
-    font-size:11px;
-    letter-spacing:0.32em;
-    text-transform:uppercase;
-    color:var(--gold);
-    margin-bottom:22px;
-  }
+  .tx-row{display:flex;align-items:center;justify-content:space-between;background:var(--paper);border:1px solid var(--cream-deep);border-radius:10px;padding:10px 12px;margin-bottom:8px;}
+  .tx-row .meta{min-width:0;}
+  .tx-row .cat{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tx-row .sub{font-size:11px;opacity:.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tx-row .amt{font-weight:600;font-size:14px;font-variant-numeric:tabular-nums;flex-shrink:0;margin-left:8px;}
+  .tx-row .del{background:none;border:none;cursor:pointer;opacity:.4;flex-shrink:0;margin-left:8px;}
 
-  .mark{
-    width:52px; height:52px;
-    margin-bottom:22px;
-  }
+  .chip-row{display:flex;gap:8px;margin-bottom:12px;}
+  .chip{padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:var(--cream-deep);color:var(--ink);}
+  .chip.active{background:var(--gold);}
 
-  h1{
-    font-family:'Cormorant Garamond', serif;
-    font-weight:500;
-    font-size:44px;
-    letter-spacing:0.04em;
-    line-height:1.05;
-    color:var(--cream);
-  }
+  .empty{background:var(--cream-deep);border-radius:12px;padding:24px;text-align:center;opacity:.7;font-size:13px;}
 
-  .tagline{
-    font-family:'Cormorant Garamond', serif;
-    font-style:italic;
-    font-weight:400;
-    font-size:17px;
-    color:var(--cream-dim);
-    margin-top:10px;
-    letter-spacing:0.01em;
-  }
+  .bar-wrap{margin-bottom:10px;}
+  .bar-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;}
+  .bar-track{background:var(--cream-deep);border-radius:4px;height:6px;}
+  .bar-fill{height:6px;border-radius:4px;background:var(--gold);}
+  .bar-fill.neg{background:var(--brick);}
 
-  .origin{
-    margin-top:20px;
-    font-size:11px;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:var(--gold-dim);
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-  .origin::before, .origin::after{
-    content:"";
-    height:1px; width:26px;
-    background:var(--line);
-  }
+  .stock-row{display:flex;align-items:center;justify-content:space-between;background:var(--paper);border:1px solid var(--cream-deep);border-radius:10px;padding:10px 12px;margin-bottom:8px;}
+  .qty-btn{width:24px;height:24px;border-radius:50%;background:var(--cream-deep);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;}
 
-  .links{
-    width:100%;
-    margin-top:46px;
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-  }
-
-  .link-card{
-    position:relative;
-    display:flex;
-    align-items:center;
-    gap:16px;
-    width:100%;
-    padding:18px 20px;
-    background:rgba(243,237,225,0.03);
-    border:1px solid var(--line);
-    border-radius:2px;
-    text-decoration:none;
-    color:var(--cream);
-    text-align:left;
-    transition:border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
-  }
-  .link-card:hover, .link-card:focus-visible{
-    border-color:var(--gold);
-    background:rgba(201,168,76,0.06);
-    transform:translateY(-2px);
-  }
-  .link-card:focus-visible{
-    outline:2px solid var(--gold);
-    outline-offset:3px;
-  }
-
-  .icon{
-    flex:0 0 auto;
-    width:38px; height:38px;
-    display:flex; align-items:center; justify-content:center;
-    border:1px solid var(--line);
-    border-radius:50%;
-    color:var(--gold);
-  }
-  .icon svg{ width:18px; height:18px; }
-
-  .link-text{ flex:1; }
-  .link-title{
-    font-family:'Montserrat', sans-serif;
-    font-weight:600;
-    font-size:14.5px;
-    letter-spacing:0.02em;
-    color:var(--cream);
-  }
-  .link-sub{
-    font-family:'Montserrat', sans-serif;
-    font-weight:400;
-    font-size:12px;
-    color:var(--cream-dim);
-    margin-top:2px;
-  }
-
-  .arrow{
-    flex:0 0 auto;
-    color:var(--gold-dim);
-    font-size:16px;
-    transition:transform 0.25s ease;
-  }
-  .link-card:hover .arrow{ transform:translateX(3px); color:var(--gold); }
-
-  footer{
-    margin-top:56px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:8px;
-  }
-  .footer-line{
-    height:1px; width:40px;
-    background:var(--line);
-  }
-  .footer-text{
-    font-size:10.5px;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:var(--gold-dim);
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .wrap{ animation:none; }
-    .link-card{ transition:none; }
-  }
+  .hide{display:none !important;}
 </style>
 </head>
 <body>
+<div class="app">
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+    </div>
+    <div>
+      <div class="brand display">Rosess Coffee</div>
+      <div class="sub">Buku Kas Bisnis</div>
+    </div>
+  </header>
 
-<div class="contours" aria-hidden="true">
-  <svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice">
-    <path d="M -20 120 Q 100 80 200 130 T 420 110"/>
-    <path d="M -20 180 Q 90 150 200 190 T 420 175"/>
-    <path d="M -20 240 Q 110 210 200 250 T 420 235"/>
-    <path d="M -20 600 Q 100 560 200 610 T 420 590"/>
-    <path d="M -20 660 Q 90 630 200 670 T 420 655"/>
-    <path d="M -20 720 Q 110 690 200 730 T 420 715"/>
-  </svg>
+  <nav id="tabs">
+    <button data-tab="dashboard" class="active">Ringkasan</button>
+    <button data-tab="transaksi">Transaksi</button>
+    <button data-tab="stok">Stok</button>
+    <button data-tab="laporan">Laporan</button>
+  </nav>
+
+  <main id="main"></main>
+
+  <footer>Grown with care, roasted with purpose. 🌾</footer>
 </div>
 
-<div class="wrap">
-  <div class="eyebrow">Talaga Bodas &middot; Garut</div>
+<script>
+const PRODUCTS = ["Robusta Natural 100g","Robusta Natural 200g","Arabika Natural 100g","Arabika Natural 200g","Arabika Wine Natural 100g","Signature Blend 100g","Lainnya"];
+const CHANNELS = ["Shopee","TikTok Shop","Instagram","Offline / Langsung"];
+const EXPENSE_CATS = ["Green Bean / Bahan Baku","Roasting","Packaging & Label","Ongkir / Ekspedisi","Iklan / Ads","Operasional Lain"];
 
-  <svg class="mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <circle cx="50" cy="50" r="48" stroke="#C9A84C" stroke-width="1"/>
-    <path d="M35 42 C35 34 41 30 50 30 C59 30 65 34 65 42 C65 52 58 58 50 58 C42 58 35 52 35 42 Z" stroke="#C9A84C" stroke-width="1.4"/>
-    <path d="M50 30 L50 58" stroke="#C9A84C" stroke-width="1.4"/>
-    <path d="M40 62 Q50 70 60 62" stroke="#C9A84C" stroke-width="1" opacity="0.6"/>
-  </svg>
+const fmtRp = n => "Rp " + Math.round(n||0).toLocaleString("id-ID");
+const todayISO = () => new Date().toISOString().slice(0,10);
+const monthKey = iso => iso.slice(0,7);
+const monthLabel = key => { const [y,m]=key.split("-"); return new Date(+y,+m-1,1).toLocaleDateString("id-ID",{month:"long",year:"numeric"}); };
+const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 
-  <h1>Rosess Coffee</h1>
-  <p class="tagline">Single-Origin Arabica &middot; Natural Process</p>
-  <div class="origin">1.600 MDPL</div>
+function formatRupiahInput(el){
+  let raw = el.value.replace(/\D/g,"");
+  el.value = raw ? Number(raw).toLocaleString("id-ID") : "";
+}
+function parseRupiahInput(id){
+  const el = document.getElementById(id);
+  return Number((el && el.value || "").replace(/\D/g,"")) || 0;
+}
 
-  <div class="links">
-    <a class="link-card" href="https://id.shp.ee/cAU1Ww5c" target="_blank" rel="noopener">
-      <span class="icon">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4h10l1 3h2a1 1 0 011 1v12a2 2 0 01-2 2H5a2 2 0 01-2-2V8a1 1 0 011-1h2l1-3zm2 0l-1 3h8l-1-3H9zm-3 6v9h12v-9H6zm4 2a2 2 0 104 0h2a4 4 0 01-8 0h2z"/></svg>
-      </span>
-      <span class="link-text">
-        <div class="link-title">Belanja di Shopee</div>
-        <div class="link-sub">Kopi dan bundling &middot; pengiriman nasional</div>
-      </span>
-      <span class="arrow">&#8594;</span>
-    </a>
+function loadTx(){ try{ return JSON.parse(localStorage.getItem("rosess-transactions")||"[]"); }catch(e){ return []; } }
+function saveTx(v){ localStorage.setItem("rosess-transactions", JSON.stringify(v)); }
+function loadStock(){ try{ return JSON.parse(localStorage.getItem("rosess-stock")||"[]"); }catch(e){ return []; } }
+function saveStock(v){ localStorage.setItem("rosess-stock", JSON.stringify(v)); }
 
-    <a class="link-card" href="https://www.tiktok.com/@rosesscoffe26?_r=1&_t=ZS-97gj9KqyG4z" target="_blank" rel="noopener">
-      <span class="icon">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.4 2.2 1.9 3.7 4 3.9V9.9c-1.4 0-2.7-.4-3.8-1.2v6.6c0 3.3-2.7 5.7-5.8 5.7A5.8 5.8 0 015 15.2a5.8 5.8 0 016.9-5.7v3.1a2.7 2.7 0 00-1-.2 2.7 2.7 0 100 5.4c1.5 0 2.7-1.2 2.7-2.7V3h2.9z"/></svg>
-      </span>
-      <span class="link-text">
-        <div class="link-title">TikTok Shop</div>
-        <div class="link-sub">Live, video, dan checkout langsung</div>
-      </span>
-      <span class="arrow">&#8594;</span>
-    </a>
+let state = { tab: "dashboard", transactions: loadTx(), stock: loadStock(), txFormOpen:false, stockFormOpen:false, txFilter:"all", reportMonth:null };
 
-    <a class="link-card" href="https://www.instagram.com/rosesscoffee?igsh=M28xdzB1dmVhb2Zq" target="_blank" rel="noopener">
-      <span class="icon">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c2.7 0 3 0 4.1.06 1.1.05 1.8.22 2.3.42.6.24 1 .53 1.5 1s.76.9 1 1.5c.2.5.37 1.2.42 2.3.06 1.1.06 1.4.06 4.1s0 3-.06 4.1c-.05 1.1-.22 1.8-.42 2.3-.24.6-.53 1-1 1.5s-.9.76-1.5 1c-.5.2-1.2.37-2.3.42-1.1.06-1.4.06-4.1.06s-3 0-4.1-.06c-1.1-.05-1.8-.22-2.3-.42-.6-.24-1-.53-1.5-1s-.76-.9-1-1.5c-.2-.5-.37-1.2-.42-2.3C2.2 15 2.2 14.7 2.2 12s0-3 .06-4.1c.05-1.1.22-1.8.42-2.3.24-.6.53-1 1-1.5s.9-.76 1.5-1c.5-.2 1.2-.37 2.3-.42C8.8 2.2 9.1 2.2 12 2.2zm0 1.8c-2.65 0-2.96 0-4.02.06-.9.04-1.4.18-1.7.3-.44.17-.75.37-1.08.7-.33.33-.53.64-.7 1.08-.12.3-.26.8-.3 1.7C4.15 9.02 4.15 9.33 4.15 12s0 2.98.06 4.04c.04.9.18 1.4.3 1.7.17.44.37.75.7 1.08.33.33.64.53 1.08.7.3.12.8.26 1.7.3 1.06.06 1.37.06 4.02.06s2.96 0 4.02-.06c.9-.04 1.4-.18 1.7-.3.44-.17.75-.37 1.08-.7.33-.33.53-.64.7-1.08.12-.3.26-.8.3-1.7.06-1.06.06-1.37.06-4.04s0-2.98-.06-4.04c-.04-.9-.18-1.4-.3-1.7a2.9 2.9 0 00-.7-1.08 2.9 2.9 0 00-1.08-.7c-.3-.12-.8-.26-1.7-.3C14.96 4 14.65 4 12 4zm0 3.4a4.6 4.6 0 110 9.2 4.6 4.6 0 010-9.2zm0 1.8a2.8 2.8 0 100 5.6 2.8 2.8 0 000-5.6zm4.8-2a1.08 1.08 0 110 2.16 1.08 1.08 0 010-2.16z"/></svg>
-      </span>
-      <span class="link-text">
-        <div class="link-title">Instagram</div>
-        <div class="link-sub">Cerita origin, brewing, dan behind the scenes</div>
-      </span>
-      <span class="arrow">&#8594;</span>
-    </a>
-  </div>
+function esc(s){ return (s||"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 
-  <footer>
-    <div class="footer-line"></div>
-    <div class="footer-text">Rosess Coffee &middot; Garut, Indonesia</div>
-  </footer>
-</div>
+// ---------- render dashboard ----------
+function renderDashboard(){
+  const tm = monthKey(todayISO());
+  const monthTx = state.transactions.filter(t=>monthKey(t.date)===tm);
+  const income = monthTx.filter(t=>t.type==="in").reduce((s,t)=>s+t.amount,0);
+  const expense = monthTx.filter(t=>t.type==="out").reduce((s,t)=>s+t.amount,0);
+  const saldo = state.transactions.reduce((s,t)=>s+(t.type==="in"?t.amount:-t.amount),0);
 
+  const byChannel = {};
+  monthTx.filter(t=>t.type==="in").forEach(t=>{ byChannel[t.channel||"Lainnya"]=(byChannel[t.channel||"Lainnya"]||0)+t.amount; });
+  const chEntries = Object.entries(byChannel);
+  const chMax = Math.max(1, ...chEntries.map(e=>e[1]));
+
+  const recent = [...state.transactions].sort((a,b)=>a.date<b.date?1:-1).slice(0,5);
+
+  let html = `
+    <div class="seal">
+      <div class="lbl">Saldo Bersih</div>
+      <div class="amt" style="color:${saldo>=0?'var(--olive)':'var(--brick)'}">${fmtRp(saldo)}</div>
+      <div class="name">Rosess Coffee</div>
+    </div>
+    <div class="stat-grid">
+      <div class="card" style="margin-bottom:0;"><div class="label">Pemasukan Bulan Ini</div><div class="stat-value up">${fmtRp(income)}</div></div>
+      <div class="card" style="margin-bottom:0;"><div class="label">Pengeluaran Bulan Ini</div><div class="stat-value down">${fmtRp(expense)}</div></div>
+    </div>`;
+
+  if(chEntries.length){
+    html += `<div class="card"><div class="label">Pemasukan per Channel — ${monthLabel(tm)}</div>`;
+    chEntries.forEach(([name,val])=>{
+      html += `<div class="bar-wrap"><div class="bar-top"><span>${esc(name)}</span><span>${fmtRp(val)}</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${(val/chMax)*100}%"></div></div></div>`;
+    });
+    html += `</div>`;
+  }
+
+  html += `<div class="label">Transaksi Terbaru</div>`;
+  if(!recent.length){
+    html += `<div class="empty">Belum ada transaksi tercatat. Mulai catat di tab Transaksi.</div>`;
+  } else {
+    recent.forEach(t=> html += txRowHTML(t,false));
+  }
+  document.getElementById("main").innerHTML = html;
+}
+
+function txRowHTML(t, withDelete){
+  const isIn = t.type==="in";
+  const dateStr = new Date(t.date).toLocaleDateString("id-ID",{day:"2-digit",month:"short",year:"numeric"});
+  const subParts = [dateStr];
+  if(t.channel) subParts.push(t.channel);
+  if(t.note) subParts.push(t.note);
+  return `<div class="tx-row">
+    <div class="meta"><div class="cat">${esc(t.category)}</div><div class="sub">${esc(subParts.join(" · "))}</div></div>
+    <div class="amt" style="color:${isIn?'var(--olive)':'var(--brick)'}">${isIn?'+':'−'}${fmtRp(t.amount)}</div>
+    ${withDelete?`<button class="del" onclick="deleteTx('${t.id}')">✕</button>`:""}
+  </div>`;
+}
+
+// ---------- render transaksi ----------
+function renderTransaksi(){
+  let html = "";
+  if(!state.txFormOpen){
+    html += `<button class="btn-primary" style="margin-bottom:16px;" onclick="toggleTxForm(true)">+ Catat Transaksi Baru</button>`;
+  } else {
+    html += txFormHTML();
+  }
+  html += `<div class="chip-row">
+    <button class="chip ${state.txFilter==='all'?'active':''}" onclick="setTxFilter('all')">Semua</button>
+    <button class="chip ${state.txFilter==='in'?'active':''}" onclick="setTxFilter('in')">Pemasukan</button>
+    <button class="chip ${state.txFilter==='out'?'active':''}" onclick="setTxFilter('out')">Pengeluaran</button>
+  </div>`;
+  const filtered = state.transactions.filter(t=>state.txFilter==='all'||t.type===state.txFilter).sort((a,b)=>a.date<b.date?1:-1);
+  if(!filtered.length){ html += `<div class="empty">Tidak ada transaksi untuk filter ini.</div>`; }
+  else { filtered.forEach(t=> html += txRowHTML(t,true)); }
+  document.getElementById("main").innerHTML = html;
+}
+
+let txType = "in";
+function txFormHTML(){
+  const cats = txType==="in" ? PRODUCTS : EXPENSE_CATS;
+  return `<div class="card" style="border-color:var(--gold);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <span class="display" style="font-size:20px;font-weight:600;">Catat Transaksi</span>
+      <button onclick="toggleTxForm(false)" style="background:none;border:none;cursor:pointer;font-size:16px;">✕</button>
+    </div>
+    <div class="row-flex" style="margin-bottom:12px;">
+      <button class="btn-toggle ${txType==='in'?'on-in':''}" onclick="setTxType('in')">Pemasukan</button>
+      <button class="btn-toggle ${txType==='out'?'on-out':''}" onclick="setTxType('out')">Pengeluaran</button>
+    </div>
+    <div class="grid2">
+      <div class="field"><span>Tanggal</span><input type="date" id="f-date" value="${todayISO()}" /></div>
+      <div class="field"><span>${txType==='in'?'Produk':'Kategori'}</span>
+        <select id="f-cat">${cats.map(c=>`<option>${esc(c)}</option>`).join("")}</select>
+      </div>
+    </div>
+    ${txType==='in' ? `<div class="grid2">
+      <div class="field"><span>Channel</span><select id="f-channel">${CHANNELS.map(c=>`<option>${esc(c)}</option>`).join("")}</select></div>
+      <div class="field"><span>Jumlah Pcs</span><input type="number" id="f-qty" min="1" value="1" /></div>
+    </div>` : ""}
+    <div class="field"><span>${txType==='in'?'Total Diterima (Rp)':'Total Dibayar (Rp)'}</span><input type="text" inputmode="numeric" id="f-amount" placeholder="0" oninput="formatRupiahInput(this)" /></div>
+    <div class="field"><span>Catatan (opsional)</span><input type="text" id="f-note" placeholder="cth: order dari Shopee, an. Budi" /></div>
+    <button class="btn-primary" onclick="submitTx()">Simpan Transaksi</button>
+  </div>`;
+}
+function setTxType(t){ txType=t; renderTransaksi(); }
+function toggleTxForm(open){ state.txFormOpen=open; if(open) txType="in"; renderTransaksi(); }
+function setTxFilter(f){ state.txFilter=f; renderTransaksi(); }
+function submitTx(){
+  const amount = parseRupiahInput("f-amount");
+  if(!amount || amount<=0){ alert("Isi jumlah dengan benar ya, cowpoke."); return; }
+  const t = {
+    id: uid(), type: txType,
+    date: document.getElementById("f-date").value || todayISO(),
+    category: document.getElementById("f-cat").value,
+    channel: txType==="in" ? document.getElementById("f-channel").value : "",
+    qty: txType==="in" ? Number(document.getElementById("f-qty").value)||1 : null,
+    amount, note: (document.getElementById("f-note").value||"").trim()
+  };
+  state.transactions.unshift(t); saveTx(state.transactions);
+  state.txFormOpen=false; renderTransaksi();
+}
+function deleteTx(id){
+  state.transactions = state.transactions.filter(t=>t.id!==id);
+  saveTx(state.transactions);
+  render();
+}
+
+// ---------- render stok ----------
+function renderStok(){
+  const totalValue = state.stock.reduce((s,i)=>s+i.qty*i.cost,0);
+  let html = `<div class="card"><div class="label">Total Nilai Stok</div><div class="stat-value">${fmtRp(totalValue)}</div></div>`;
+  if(!state.stockFormOpen){
+    html += `<button class="btn-primary" style="margin-bottom:16px;" onclick="toggleStockForm(true)">+ Tambah Item Stok</button>`;
+  } else {
+    html += `<div class="card" style="border-color:var(--gold);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span class="display" style="font-size:20px;font-weight:600;">Item Baru</span>
+        <button onclick="toggleStockForm(false)" style="background:none;border:none;cursor:pointer;font-size:16px;">✕</button>
+      </div>
+      <div class="field"><span>Nama Item</span><input type="text" id="s-name" placeholder="cth: Green Bean Robusta" /></div>
+      <div class="grid3">
+        <div class="field"><span>Jumlah</span><input type="number" id="s-qty" /></div>
+        <div class="field"><span>Satuan</span><select id="s-unit">${["kg","g","pcs","roll","box"].map(u=>`<option>${u}</option>`).join("")}</select></div>
+        <div class="field"><span>Harga/Satuan</span><input type="text" inputmode="numeric" id="s-cost" placeholder="0" oninput="formatRupiahInput(this)" /></div>
+      </div>
+      <button class="btn-primary" onclick="submitStock()">Simpan Item</button>
+    </div>`;
+  }
+  if(!state.stock.length){ html += `<div class="empty">Belum ada item stok. Tambahkan bahan baku atau kemasan.</div>`; }
+  else {
+    state.stock.forEach(item=>{
+      html += `<div class="stock-row">
+        <div class="meta"><div class="cat" style="font-size:14px;">${esc(item.name)}</div>
+          <div class="sub">${fmtRp(item.cost)} / ${esc(item.unit)} · nilai ${fmtRp(item.qty*item.cost)}</div></div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="qty-btn" onclick="adjustStock('${item.id}',-1)">−</button>
+          <span style="width:56px;text-align:center;font-size:13px;">${item.qty} ${esc(item.unit)}</span>
+          <button class="qty-btn" onclick="adjustStock('${item.id}',1)">+</button>
+          <button class="del" onclick="deleteStock('${item.id}')">✕</button>
+        </div>
+      </div>`;
+    });
+  }
+  document.getElementById("main").innerHTML = html;
+}
+function toggleStockForm(open){ state.stockFormOpen=open; renderStok(); }
+function submitStock(){
+  const name = document.getElementById("s-name").value.trim();
+  const qty = Number(document.getElementById("s-qty").value);
+  if(!name || document.getElementById("s-qty").value===""){ alert("Isi nama dan jumlah dulu, partner."); return; }
+  state.stock.push({ id:uid(), name, qty, unit:document.getElementById("s-unit").value, cost:parseRupiahInput("s-cost") });
+  saveStock(state.stock);
+  state.stockFormOpen=false; renderStok();
+}
+function adjustStock(id, delta){
+  state.stock = state.stock.map(i=> i.id===id ? {...i, qty: Math.max(0, +(i.qty+delta).toFixed(2))} : i);
+  saveStock(state.stock); renderStok();
+}
+function deleteStock(id){
+  state.stock = state.stock.filter(i=>i.id!==id);
+  saveStock(state.stock); renderStok();
+}
+
+// ---------- render laporan ----------
+function renderLaporan(){
+  const monthsSet = new Set(state.transactions.map(t=>monthKey(t.date)));
+  monthsSet.add(monthKey(todayISO()));
+  const months = Array.from(monthsSet).sort().reverse();
+  if(!state.reportMonth || !months.includes(state.reportMonth)) state.reportMonth = months[0];
+
+  const monthTx = state.transactions.filter(t=>monthKey(t.date)===state.reportMonth);
+  const income = monthTx.filter(t=>t.type==="in").reduce((s,t)=>s+t.amount,0);
+  const expense = monthTx.filter(t=>t.type==="out").reduce((s,t)=>s+t.amount,0);
+  const net = income-expense;
+
+  const byProduct = {}; monthTx.filter(t=>t.type==="in").forEach(t=>{ byProduct[t.category]=(byProduct[t.category]||0)+t.amount; });
+  const byExpense = {}; monthTx.filter(t=>t.type==="out").forEach(t=>{ byExpense[t.category]=(byExpense[t.category]||0)+t.amount; });
+
+  const allIncome = state.transactions.filter(t=>t.type==="in").reduce((s,t)=>s+t.amount,0);
+  const allExpense = state.transactions.filter(t=>t.type==="out").reduce((s,t)=>s+t.amount,0);
+  const allNet = allIncome - allExpense;
+
+  let html = `<div class="card" style="border-color:var(--gold);">
+    <div class="label">Ringkasan Keseluruhan (Semua Waktu)</div>
+    <div style="display:flex;justify-content:space-between;padding:4px 0;"><span style="opacity:.7;font-size:14px;">Total Pemasukan</span><span class="up" style="font-weight:600;font-variant-numeric:tabular-nums;">${fmtRp(allIncome)}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:4px 0;"><span style="opacity:.7;font-size:14px;">Total Pengeluaran</span><span class="down" style="font-weight:600;font-variant-numeric:tabular-nums;">${fmtRp(allExpense)}</span></div>
+    <div style="border-top:1px solid var(--cream-deep);margin:8px 0;"></div>
+    <div style="display:flex;justify-content:space-between;padding:4px 0;"><span style="opacity:.7;font-size:14px;">Laba Bersih</span><span style="font-weight:700;font-size:18px;font-variant-numeric:tabular-nums;color:${allNet>=0?'var(--olive)':'var(--brick)'}">${fmtRp(allNet)}</span></div>
+  </div>`;
+
+  html += `<div class="label" style="margin-top:4px;">Rincian Per Bulan</div>`;
+  html += `<div class="row-flex" style="margin-bottom:16px;">
+    <select id="report-month" style="flex:1;" onchange="changeReportMonth(this.value)">
+      ${months.map(m=>`<option value="${m}" ${m===state.reportMonth?"selected":""}>${monthLabel(m)}</option>`).join("")}
+    </select>
+    <button class="btn-primary" style="width:auto;padding:9px 14px;" onclick="exportCSV()">⬇ CSV</button>
+  </div>`;
+
+  html += `<div class="card">
+    <div style="display:flex;justify-content:space-between;padding:4px 0;"><span style="opacity:.7;font-size:14px;">Total Pemasukan</span><span class="up" style="font-weight:600;font-variant-numeric:tabular-nums;">${fmtRp(income)}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:4px 0;"><span style="opacity:.7;font-size:14px;">Total Pengeluaran</span><span class="down" style="font-weight:600;font-variant-numeric:tabular-nums;">${fmtRp(expense)}</span></div>
+    <div style="border-top:1px solid var(--cream-deep);margin:8px 0;"></div>
+    <div style="display:flex;justify-content:space-between;padding:4px 0;"><span style="opacity:.7;font-size:14px;">Laba Bersih</span><span style="font-weight:700;font-size:17px;font-variant-numeric:tabular-nums;color:${net>=0?'var(--olive)':'var(--brick)'}">${fmtRp(net)}</span></div>
+  </div>`;
+
+  html += reportBlockHTML("Pemasukan per Produk", byProduct, false);
+  html += reportBlockHTML("Pengeluaran per Kategori", byExpense, true);
+
+  document.getElementById("main").innerHTML = html;
+}
+function reportBlockHTML(title, map, negative){
+  const entries = Object.entries(map).sort((a,b)=>b[1]-a[1]);
+  const total = entries.reduce((s,[,v])=>s+v,0) || 1;
+  let html = `<div class="card"><div class="label">${title}</div>`;
+  if(!entries.length){ html += `<p style="font-size:13px;opacity:.5;margin:0;">Tidak ada data bulan ini.</p>`; }
+  else {
+    entries.forEach(([name,val])=>{
+      html += `<div class="bar-wrap"><div class="bar-top"><span>${esc(name)}</span><span style="color:${negative?'var(--brick)':'var(--olive)'};font-weight:600;">${fmtRp(val)}</span></div>
+        <div class="bar-track"><div class="bar-fill ${negative?'neg':''}" style="width:${(val/total)*100}%"></div></div></div>`;
+    });
+  }
+  html += `</div>`;
+  return html;
+}
+function changeReportMonth(v){ state.reportMonth=v; renderLaporan(); }
+function exportCSV(){
+  const monthTx = state.transactions.filter(t=>monthKey(t.date)===state.reportMonth).sort((a,b)=>a.date<b.date?-1:1);
+  const header = "Tanggal,Jenis,Kategori,Channel,Jumlah,Catatan\n";
+  const rows = monthTx.map(t=>[t.date, t.type==="in"?"Pemasukan":"Pengeluaran", `"${t.category}"`, `"${t.channel||""}"`, t.amount, `"${(t.note||"").replace(/"/g,"'")}"`].join(",")).join("\n");
+  const blob = new Blob([header+rows], {type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href=url; a.download = `rosess-laporan-${state.reportMonth}.csv`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ---------- nav / master render ----------
+function render(){
+  document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("active", b.dataset.tab===state.tab));
+  if(state.tab==="dashboard") renderDashboard();
+  else if(state.tab==="transaksi") renderTransaksi();
+  else if(state.tab==="stok") renderStok();
+  else renderLaporan();
+}
+document.querySelectorAll("#tabs button").forEach(b=>{
+  b.addEventListener("click", ()=>{ state.tab=b.dataset.tab; state.txFormOpen=false; state.stockFormOpen=false; render(); });
+});
+render();
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); });
+}
+</script>
 </body>
 </html>
